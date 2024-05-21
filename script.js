@@ -223,7 +223,7 @@ function createCubeText(wordString, fromPanel, toPanel) {
         const reflow = entryContainer.clientWidth;
         console.log(reflow);
         entryContainer.style[orientMeFrom] = entryContainerHeightOrWidth + "px";
-        console.log(entryContainer.style.right);
+        console.log(entryContainer.style);
 
     })
 
