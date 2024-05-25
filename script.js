@@ -4,6 +4,7 @@ let windowHeight = window.innerHeight;
 // Grab panels
 let topPanel = document.querySelector(".cube__panel-top");
 let backPanel = document.querySelector(".cube__panel-back");
+console.log(backPanel.offsetHeight);
 let rightPanel = document.querySelector(".cube__panel-right");
 let leftPanel = document.querySelector(".cube__panel-left");
 let bottomPanel = document.querySelector(".cube__panel-bottom");
@@ -75,127 +76,61 @@ function slideInButtons() {
     }
 }
 
-slideInButtons()
+// slideInButtons()
 
-function createHiMessage(delay) {
-    // make elements for "hi"
-    let topPanelContainerForHi = document.createElement("div");
-    let topPanelSpanForHi = document.createElement("span");
-    let backPanelContainerForHi = document.createElement("div");
-    let backPanelSpanForHi = document.createElement("span");
-    // make elements for "there"
-    let rightPanelContainerForThere = document.createElement("div");
-    let rightPanelSpanForThere = document.createElement("span");
-    let backPanelContainerForThere = document.createElement("div");
-    let backPanelSpanForThere = document.createElement("span");
-
-    // Make arrays for "Hi," text
-    let hiPanelSpans = [topPanelSpanForHi, backPanelSpanForHi]
-    let mainPanelArrayForHi = [topPanel, backPanel];
-    let hiContainers = [topPanelContainerForHi, backPanelContainerForHi];
-
-    // Make arrays for "there" text 
-    let therePanelSpans = [rightPanelSpanForThere, backPanelSpanForThere];
-    let mainPanelArrayForThere = [rightPanel, backPanel];
-    let thereContainers = [rightPanelContainerForThere, backPanelContainerForThere];
-
-
-    for (let i = 0; i < hiContainers.length; i++) {
-        hiContainers[i].classList.add("plain-panel", "hi");
-        hiContainers[i].appendChild(hiPanelSpans[i]);
-        hiPanelSpans[i].classList.add("panel-span", "hi");
-        hiPanelSpans[i].textContent = "Hi,";
-        mainPanelArrayForHi[i].appendChild(hiContainers[i]);
-        hiContainers[0].classList.add("start-minus-100-top");
-        hiContainers[1].classList.add("start-minus-200-top");
-    }
-
-
-    // for (let i = 0; i < thereContainers.length; i++) {
-    //     thereContainers[i].classList.add("plain-panel", "there");
-    //     thereContainers[i].appendChild(therePanelSpans[i]);
-    //     therePanelSpans[i].classList.add("panel-span", "there");
-    //     therePanelSpans[i].textContent = "there!";
-    //     mainPanelArrayForThere[i].appendChild(thereContainers[i]);
-    //     thereContainers[0].classList.add("start-plus-100-left");
-    //     thereContainers[1].classList.add("start-plus-200-left");
-    // }
-
-    setInterval(() => {
-        for (let i = 0; i < hiContainers.length; i++) {
-            hiContainers[0].classList.add("end-plus-100-top");
-            hiContainers[1].classList.add("end-zero-top");
-            // thereContainers[0].classList.add("right");
-            // thereContainers[1].classList.add("back");
-        }
-    }, delay);
-
-}
-
-// createHiMessage(500)
-
-function createCubeText(wordString, fromPanel, toPanel) {
+function createCubeText(wordString, fromPanel, toPanel, transitionDuration) {
     let orientMeFrom = "";
     let directionRootMargin = "";
+    let entryGridItem = document.createElement("div");
+    let destinationGridItem = document.createElement("div");
 
-    if (fromPanel === topPanel) { 
+    if (fromPanel === topPanel) {
         orientMeFrom = "top";
-        directionRootMargin = "-99% 0px 0px 0px"; 
+        directionRootMargin = "-99% 0px 0px 0px";
     }
-    if (fromPanel === rightPanel) { 
-        orientMeFrom = "right"; 
-        directionRootMargin = "0px -99% 0px 0px"; 
+    if (fromPanel === rightPanel) {
+        orientMeFrom = "right";
+        directionRootMargin = "0px -99% 0px 0px";
     }
-    if (fromPanel === bottomPanel) { 
-        orientMeFrom = "bottom"; 
-        directionRootMargin = "0px 0px -99% 0px"; 
+    if (fromPanel === bottomPanel) {
+        orientMeFrom = "bottom";
+        directionRootMargin = "0px 0px -99% 0px";
     }
-    if (fromPanel === leftPanel) { 
-        orientMeFrom = "left"; 
-        directionRootMargin = "0px 0px 0px -99%"; 
+    if (fromPanel === leftPanel) {
+        orientMeFrom = "left";
+        directionRootMargin = "0px 0px 0px -99%";
     }
 
-    let entryContainer = document.createElement("div");
-    let destinationContainer = document.createElement("div");
+    console.log(orientMeFrom);
+
+
+    let entryContainerGrid = document.createElement("div");
+    let destinationContainerGrid = document.createElement("div");
 
     let entryContainerSpan = document.createElement("span");
     let destinationContainerSpan = document.createElement("span");
 
+    let containerGridItemsArray = [entryGridItem, destinationGridItem];
+
     let basePanelsArray = [fromPanel, toPanel];
 
     let spans = [entryContainerSpan, destinationContainerSpan];
-    let containers = [entryContainer, destinationContainer];
+    let containerGrids = [entryContainerGrid, destinationContainerGrid];
 
+    // Get height and width of destination container
+    const destinationContainerWidth = toPanel.offsetWidth;
+    const destinationContainerHeight = toPanel.offsetHeight;
 
-    for (let i = 0; i < containers.length; i++) {
-        containers[i].classList.add("plain-panel", "placement-on-panel")
-        containers[i].appendChild(spans[i]);
+    for (let i = 0; i < containerGrids.length; i++) {
+        containerGrids[i].classList.add("panel-container-grid");
+        containerGrids[i].style.height = destinationContainerHeight + "px";
+        containerGrids[i].style.width = destinationContainerWidth + "px";
+        containerGrids[i].appendChild(containerGridItemsArray[i]);
+        containerGridItemsArray[i].classList.add("container-grid-content-area");
+        containerGridItemsArray[i].appendChild(spans[i]);
         spans[i].classList.add("panel-span");
-        spans[i].textContent = wordString;
-        basePanelsArray[i].appendChild(containers[i]);
-    }
-    // Adjust font size to size of container
-    // Get height and width of container and spans
-    const destinationContainerWidth = destinationContainer.offsetWidth;
-    const destinationContainerHeight = destinationContainer.offsetHeight;
-    let destinationContainerSpanWidth = destinationContainerSpan.offsetWidth;
-    let destinationContainerSpanHeight = destinationContainerSpan.offsetHeight;
-    // Get the inital fontsize
-    let spanFontSize = parseInt(window.getComputedStyle(destinationContainerSpan).fontSize);
-    // if the fontsize currently is bigger than the container set fontsize to 2px
-    if (destinationContainerSpanHeight >= destinationContainerHeight || destinationContainerSpanWidth >= destinationContainerWidth) {
-        spans.forEach(span => {
-            span.style.fontSize = "2px";
-        })
-    }
-    // increase fontsize 2px until its eiter too tall or too wide
-    while (destinationContainerSpanHeight * 1.2 < destinationContainerHeight && destinationContainerSpanWidth * 1.2 < destinationContainerWidth) {
-        spanFontSize += 2;
-        spans.forEach(span => {
-            span.style.fontSize = spanFontSize + "px";
-        })
-        destinationContainerSpanHeight = destinationContainerSpan.offsetHeight;
-        destinationContainerSpanWidth = destinationContainerSpan.offsetWidth;
+        spans[i].innerHTML = wordString;
+        basePanelsArray[i].appendChild(containerGrids[i]);
     }
 
     let entryContainerHeightOrWidth;
@@ -203,34 +138,68 @@ function createCubeText(wordString, fromPanel, toPanel) {
     let widthOrHeight;
 
     if (orientMeFrom === "top" || orientMeFrom === "bottom") {
-        entryContainerHeightOrWidth = entryContainer.offsetHeight;
-        destinationContainerHeightOrWidth = destinationContainer.offsetHeight;
+        entryContainerHeightOrWidth = fromPanel.offsetHeight;
+        destinationContainerHeightOrWidth = toPanel.offsetHeight;
         widthOrHeight = "height";
     }
     if (orientMeFrom === "right" || orientMeFrom === "left") {
-        entryContainerHeightOrWidth = entryContainer.offsetWidth;
-        destinationContainerHeightOrWidth = destinationContainer.offsetWidth;
+        entryContainerHeightOrWidth = fromPanel.offsetWidth;
+        destinationContainerHeightOrWidth = toPanel.offsetWidth;
         widthOrHeight = "width";
-
     }
-    console.log("entry:"+entryContainerHeightOrWidth, "dest:"+destinationContainerHeightOrWidth);
 
-    entryContainer.style[widthOrHeight] = destinationContainerHeightOrWidth + "px";
-    entryContainer.style[orientMeFrom] = - destinationContainerHeightOrWidth + "px";
-    entryContainer.classList.add("transition-added", "transition-" + orientMeFrom);
+    entryContainerGrid.style[widthOrHeight] = destinationContainerHeightOrWidth + "px";
+    entryContainerGrid.style[orientMeFrom] = - destinationContainerHeightOrWidth + "px";
+    entryContainerGrid.classList.add("transition-added", "transition-" + orientMeFrom);
+    entryContainerGrid.style.transitionDuration = transitionDuration;
+
+    let containerGridContentAreaHeight = destinationGridItem.offsetHeight;
+    let containerGridContentAreaWidth = destinationGridItem.scrollWidth;
+
+
+    let hdhfjs = document.querySelector(".panel-span");
+
+    let destinationContainerSpanWidth = destinationContainerSpan.scrollWidth;
+    let destinationContainerSpanHeight = destinationContainerSpan.offsetHeight;
+    // Get the inital fontsize
+    let spanFontSize = parseInt(window.getComputedStyle(destinationContainerSpan).fontSize);
+    console.log(spanFontSize);
+
+
+    console.log("spanWidth: " + destinationContainerSpanWidth, "Container Width: " + destinationContainerWidth);
+    console.log("spanHeight: " + destinationContainerSpanHeight, "Container Height: " + destinationContainerHeight);
+
+
+    // if the fontsize currently is bigger than the container set fontsize to 2px
+    if (destinationContainerSpanWidth > destinationContainerWidth || destinationContainerSpanHeight > containerGridContentAreaHeight) {
+        spans.forEach(span => {
+            span.style.fontSize = "1px";
+        })
+    }
+
+    // increase fontsize 2px until its either too tall or too wide
+    while (destinationContainerSpanWidth < containerGridContentAreaWidth && destinationContainerSpanHeight < containerGridContentAreaHeight) {
+        spanFontSize += 1;
+        console.log("its happening");
+        spans.forEach(span => {
+            span.style.fontSize = spanFontSize + "px";
+        })
+        destinationContainerSpanHeight = destinationContainerSpan.offsetHeight;
+        destinationContainerSpanWidth = destinationContainerSpan.offsetWidth;
+    }
+
+    spans.forEach(span => {
+        span.style.fontSize = (spanFontSize - 1) + "px";
+    })
+    console.log("spanWidth: " + destinationContainerSpanWidth, "Container Width: " + destinationContainerWidth);
+    console.log("spanHeight: " + destinationContainerSpanHeight, "Container Height: " + destinationContainerHeight);
 
     requestAnimationFrame(() => {
-        const reflow = entryContainer.clientWidth;
-        console.log(reflow);
-        entryContainer.style[orientMeFrom] = entryContainerHeightOrWidth + "px";
-        console.log(entryContainer.style);
-
+        const reflow = entryContainerGrid.clientWidth;
+        entryContainerGrid.style[orientMeFrom] = entryContainerHeightOrWidth + "px";
     })
 
-
-
-    destinationContainer.style[orientMeFrom] = - destinationContainerHeightOrWidth + "px";
-
+    destinationContainerGrid.style[orientMeFrom] = - destinationContainerHeightOrWidth + "px";
 
     const startTime = performance.now();
 
@@ -239,14 +208,14 @@ function createCubeText(wordString, fromPanel, toPanel) {
             if (entry.isIntersecting) {
                 const endTime = performance.now();
                 const transitionTimeUntilIntersection = endTime - startTime;
-                let transitionTime = getComputedStyle(entryContainer).transitionDuration.slice(0, -1) * 1000;
+                let transitionTime = getComputedStyle(entryContainerGrid).transitionDuration.slice(0, -1) * 1000;
                 const transitionPercentageLeftForDestinationContainer = transitionTimeUntilIntersection / transitionTime;
                 const transitionTimeLeftForDestinationContainer = transitionTime - transitionTime * transitionPercentageLeftForDestinationContainer;
                 console.log("it's intersecting");
-                destinationContainer.classList.add("transition-" + orientMeFrom);
-                destinationContainer.style.transitionDuration = transitionTimeLeftForDestinationContainer + "ms";
-                destinationContainer.style.transitionTimingFunction = "linear";
-                destinationContainer.style[orientMeFrom] = `0px`
+                destinationContainerGrid.classList.add("transition-" + orientMeFrom);
+                destinationContainerGrid.style.transitionDuration = transitionTimeLeftForDestinationContainer + "ms";
+                destinationContainerGrid.style.transitionTimingFunction = "linear";
+                destinationContainerGrid.style[orientMeFrom] = `0px`
             } else {
                 console.log("no intersection");
             }
@@ -261,70 +230,14 @@ function createCubeText(wordString, fromPanel, toPanel) {
 
     const observer = new IntersectionObserver(callback, options);
 
-    observer.observe(entryContainer)
-
+    observer.observe(entryContainerGrid)
+    console.log("spanWidth: " + destinationContainerSpanWidth, "Container Width: " + destinationContainerWidth);
+    console.log("spanHeight: " + destinationContainerSpanHeight, "Container Height: " + destinationContainerHeight);
 }
 
 // createCubeText("Yo!", bottomPanel, backPanel, 2000);
 // createCubeText("Hi", topPanel, backPanel, 1000);
-createCubeText("Hi there!,", leftPanel, backPanel);
+createCubeText("Hi!", leftPanel, backPanel, "2000ms");
+// createCubeText("Do you want to play a game of Rock Paper Scissor?", rightPanel, backPanel, "end", "1000ms");
 
 
-
-
-
-
-let hiContainersHeight = window.getComputedStyle(document.querySelector(".plain-panel", ".back")).height;
-console.log(hiContainersHeight);
-
-// console.log(backPanel.offsetHeight / 2);
-
-function increaseFontSizeUntilHeightOrWidth(spanClass, targetHeight, increment) {
-    let spans = Array.from(document.querySelectorAll(spanClass))
-    console.log(spans);
-    let currentHeight = spans[0].offsetHeight;
-    let fontSize = parseInt(window.getComputedStyle(spans[0]).fontSize)
-    targetHeight = parseInt(targetHeight);
-
-    console.log(targetHeight);
-    console.log(currentHeight);
-    if (currentHeight >= targetHeight) {
-        spans.forEach(span => {
-            span.style.fontSize = "2px";
-        })
-    }
-
-    while (currentHeight * 1.5 < targetHeight) {
-        fontSize += increment;
-        spans.forEach(span => {
-            span.style.fontSize = fontSize + "px";
-        })
-        currentHeight = spans[0].offsetHeight;
-    }
-    console.log(targetHeight);
-    console.log(currentHeight);
-}
-
-// increaseFontSizeUntilHeightOrWidth(".panel-span", backPanel, 2)
-
-
-// let testHiContainer = document.createElement("div");
-// testHiContainer.classList.add("plain-panel");
-// testHiContainer.style.top = "0px"
-
-
-// rightPanel.appendChild(testHiContainer);
-
-
-// let testHi = document.createElement('span');
-// testHiContainer.appendChild(testHi);
-// testHi.classList.add("panel-span")
-// testHi.textContent = "Hig"
-// testHiContainer.style.right = "0px"
-// testHi.style.transform = "scaleY(75%)"
-// testHi.style.transformOrigin = "top"
-
-
-let trySlice =  "2.5s"
-
-console.log(trySlice.slice(0, -1));
