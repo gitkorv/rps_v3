@@ -155,28 +155,33 @@ function createCubeText(wordString, fromPanel, toPanel, transitionDuration) {
 
     let containerGridContentAreaHeight = destinationGridItem.offsetHeight;
     let containerGridContentAreaWidth = destinationGridItem.scrollWidth;
+    console.log("gridcontentAreaH: "+ containerGridContentAreaHeight);
+    console.log("gridcontentAreaW: "+ containerGridContentAreaWidth);
 
 
     let hdhfjs = document.querySelector(".panel-span");
 
-    let destinationContainerSpanWidth = destinationContainerSpan.scrollWidth;
+    let destinationContainerSpanWidth = destinationContainerSpan.offsetWidth;
     let destinationContainerSpanHeight = destinationContainerSpan.offsetHeight;
     // Get the inital fontsize
     let spanFontSize = parseInt(window.getComputedStyle(destinationContainerSpan).fontSize);
     console.log(spanFontSize);
 
 
-    console.log("spanWidth: " + destinationContainerSpanWidth, "Container Width: " + destinationContainerWidth);
-    console.log("spanHeight: " + destinationContainerSpanHeight, "Container Height: " + destinationContainerHeight);
+    console.log("spanWidth: " + destinationContainerSpanWidth, "GridAreaWidth: " + containerGridContentAreaWidth);
+    console.log("spanHeight: " + destinationContainerSpanHeight, "GridAreaHeight: " + containerGridContentAreaHeight);
 
 
     // if the fontsize currently is bigger than the container set fontsize to 2px
-    if (destinationContainerSpanWidth > destinationContainerWidth || destinationContainerSpanHeight > containerGridContentAreaHeight) {
+    if (destinationContainerSpanWidth > containerGridContentAreaWidth || destinationContainerSpanHeight > containerGridContentAreaHeight) {
+        console.log("it's too small");
         spans.forEach(span => {
             span.style.fontSize = "1px";
         })
     }
-
+    destinationContainerSpanWidth = destinationContainerSpan.offsetWidth;
+    destinationContainerSpanHeight = destinationContainerSpan.offsetHeight;
+    console.log("spanHeight: " + destinationContainerSpanHeight, "gridAreaHeight: " + containerGridContentAreaHeight);
     // increase fontsize 2px until its either too tall or too wide
     while (destinationContainerSpanWidth < containerGridContentAreaWidth && destinationContainerSpanHeight < containerGridContentAreaHeight) {
         spanFontSize += 1;
@@ -191,8 +196,8 @@ function createCubeText(wordString, fromPanel, toPanel, transitionDuration) {
     spans.forEach(span => {
         span.style.fontSize = (spanFontSize - 1) + "px";
     })
-    console.log("spanWidth: " + destinationContainerSpanWidth, "Container Width: " + destinationContainerWidth);
-    console.log("spanHeight: " + destinationContainerSpanHeight, "Container Height: " + destinationContainerHeight);
+    console.log("spanWidth: " + destinationContainerSpanWidth, "GridAreaWidth: " + containerGridContentAreaWidth);
+    console.log("spanHeight: " + destinationContainerSpanHeight, "GridAreaHeight: " + containerGridContentAreaHeight);
 
     requestAnimationFrame(() => {
         const reflow = entryContainerGrid.clientWidth;
@@ -231,13 +236,12 @@ function createCubeText(wordString, fromPanel, toPanel, transitionDuration) {
     const observer = new IntersectionObserver(callback, options);
 
     observer.observe(entryContainerGrid)
-    console.log("spanWidth: " + destinationContainerSpanWidth, "Container Width: " + destinationContainerWidth);
-    console.log("spanHeight: " + destinationContainerSpanHeight, "Container Height: " + destinationContainerHeight);
+    console.log("spanWidth: " + destinationContainerSpanWidth, "GridAreaWidth: " + containerGridContentAreaWidth);
+    console.log("spanHeight: " + destinationContainerSpanHeight, "GridAreaHeight: " + containerGridContentAreaHeight);
 }
 
-// createCubeText("Yo!", bottomPanel, backPanel, 2000);
-// createCubeText("Hi", topPanel, backPanel, 1000);
-createCubeText("Hi!", leftPanel, backPanel, "2000ms");
+createCubeText("Hi!", topPanel, backPanel, "2000ms");
 // createCubeText("Do you want to play a game of Rock Paper Scissor?", rightPanel, backPanel, "end", "1000ms");
 
 
+// const hiCubeText = createCubeText()

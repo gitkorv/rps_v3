@@ -176,16 +176,11 @@ btn:hover:active {
 }
 
 .panel-container-grid > .container-grid-content-area {
-    display: block;
-    /* height: fit-content; */
-    /* width: 100%; */
-    /* background-color: orange; */
-    /* justify-content: end; */
-    /* white-space: nowrap; */
-    /* grid-area: left | 1 / 1 / 2 / 2;
-    grid-column: 2; */
-    grid-area: 2 / 2 / 11 / 5;
-    /* overflow: scroll; */
+    display: grid;
+    background-color: orange;
+
+    grid-area: 1 / 2 / 11 / 4;
+    overflow: hidden;
 }
 
 .transition-added {
@@ -209,13 +204,9 @@ btn:hover:active {
 
 .panel-span {
     display: block;
-    width: fit-content;
-    /* width: 100%; */
-
-    /* margin-left: auto; */
-
+    place-self: center center;
     font-variation-settings: "slnt" 0, "wdth" 45;
-    /* background-color: cadetblue; */
+    background-color: cadetblue;
     transform-style: preserve-3d;
 
 }
