@@ -168,8 +168,8 @@ btn:hover:active {
 .panel-container-grid {
     position: absolute;
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(10, 10%);
+    grid-template-rows: repeat(10, 10%);
     z-index: -100;
     /* background-color: blueviolet; */
 
@@ -178,8 +178,9 @@ btn:hover:active {
 .panel-container-grid > .container-grid-content-area {
     display: grid;
     background-color: orange;
+    width: 100%;
 
-    grid-area: 1 / 2 / 11 / 4;
+    /* grid-area: 1 / 2 / 11 / 4; */
     overflow: hidden;
 }
 
@@ -203,10 +204,57 @@ btn:hover:active {
 }
 
 .panel-span {
-    display: block;
-    place-self: center center;
-    font-variation-settings: "slnt" 0, "wdth" 45;
-    background-color: cadetblue;
+    display: inline-block;
+    text-wrap: balance;
+    /* display: block; */
+    font-size: 1rem;
+    /* place-self: center center; */
+    font-variation-settings: "slnt" 0, "wdth" 50;
+    /* background-color: cadetblue; */
     transform-style: preserve-3d;
 
+}
+
+.basic-bg-panel {
+    position: absolute;
+    /* left: 0;
+    top: 0; */
+    width: 100%;
+    height: 100%;
+    z-index: -500;
+    /* background-color: aqua; */
+}
+
+.three-panel {
+    position: absolute;
+    display: flex;
+    background-color: #ffffff;
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* font-size: 800px; */
+    /* left: 50px; */
+    height: 100%;
+    /* background: linear-gradient(
+    to right,
+    red 20%,               
+    orange 20% 40%,        
+    yellow 40% 60%,        
+    green 60% 80%,         
+    blue 80%  
+    ); */
+
+    /* background-color: purple; */
+}
+
+.three-panel.three-panel--transition {
+    /* transition-property: left; */
+    transition-timing-function: linear;
+}
+
+.three-panel__text {
+    position: relative;
+    top: 10%;
+    /* height: 100%; */
+    text-wrap: nowrap;
+    /* justify-self: center; */
 }
