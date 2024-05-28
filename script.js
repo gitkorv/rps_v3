@@ -351,7 +351,7 @@ const hiCubeText = {
     runNext: rpsCubeText
 };
 
-createCubeText(hiCubeText)
+// createCubeText(hiCubeText)
 
 
 function create3PanelText({

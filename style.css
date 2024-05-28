@@ -7,8 +7,8 @@
 }
 
 :root {
-    --deptNeg: -1000px;
-    --dept: 1000px;
+    --deptNeg: -500px;
+    --dept: 500px;
 }
 
 body {
