@@ -12,12 +12,17 @@
 }
 
 body {
+    position: relative;
+    top: 0;
+    left: 0;
     height: 100dvh;
     width: 100dvw;
     font-family: "nickel-gothic-variable", sans-serif;
     font-variation-settings: "slnt"0, "wdth"25;
     font-size: 5rem;
     overflow: hidden;
+    transform-style: preserve-3d;
+
     /* transform: translate3d(0,0,-100dvh); */
     /* perspective: 100px; */
 
@@ -34,6 +39,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    pointer-events: none;
 }
 
 .cube-wrapper {
@@ -42,6 +48,7 @@ body {
     position: relative;
     perspective: calc(var(--dept) * 2);
     transform-style: preserve-3d;
+    /* pointer-events: none; */
 }
 
 .panel {
@@ -49,8 +56,9 @@ body {
     position: absolute;
     height: 100dvh;
     width: 100dvw;
-    border: 1px rgb(0, 0, 0) solid;
+    /* border: 1px rgb(0, 0, 0) solid; */
     overflow: hidden;
+    pointer-events: all;
     /* transform-style: preserve-3d; */
 
 }
@@ -74,8 +82,12 @@ body {
     transform-origin: bottom;
     transform: rotate3d(1, 0, 0, 90deg);
     overflow: visible;
-    z-index: 100;
+    /* z-index: 100; */
 }
+
+/* .panel.bottom:hover {
+    background-color: yellow;
+} */
 
 .panel.side-panels {
     width: var(--dept);
@@ -125,15 +137,30 @@ body {
 
 .btn {
     position: relative;
+    display: inline-block;
+    font-family: trade-gothic-next-condensed, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1rem;
+    color: black;
     left: -150%;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 30%;
-    color: #eee;
-    background-color: rgb(186, 24, 24);
+    background-color: white;
     box-shadow: 0px 5px 0px 2px black;
     transition: all .3s ease;
+    pointer-events: auto;
+    z-index: 5000;
+    border-radius: 50%;
+}
+
+.btn:first-of-type {
+    box-shadow: 2px 5px 0px 2px black;
+}
+.btn:last-of-type {
+    box-shadow: -2px 5px 0px 2px black;
 }
 
 .slide-in-from-left {
@@ -147,23 +174,37 @@ body {
     }
 }
 
-/* .btn span {
-    font-size: 10rem;
-} */
-
 .btn:hover {
-    transform: translateZ(20px);
-    box-shadow: 0px 50px 0px 2px black;
+    transform: translateZ(10px);
+    box-shadow: 0px 30px 0px 0px black;
     cursor: pointer;
 }
 
-btn:hover:active {
-    background-color: yellow;
+.btn:first-of-type:hover {
+    box-shadow: 5px 30px 0px 0px black;
+}
+.btn:last-of-type:hover {
+    box-shadow: -5px 30px 0px 0px black;
+}
+
+.btn:hover:active {
+    background-color: teal;
     transform: translateY(0dvw) scale(95%);
     box-shadow: 0px 5px 0px 0px black;
-
     transition-duration: .1s;
 }
+
+.btn span {
+
+    transition: rotate .5s;
+}
+
+.btn > span:active {
+    /* color: yellow; */
+    rotate: 180deg;
+}
+
+
 
 .panel-container-grid {
     position: absolute;
@@ -175,7 +216,7 @@ btn:hover:active {
 
 }
 
-.panel-container-grid > .container-grid-content-area {
+.panel-container-grid>.container-grid-content-area {
     display: grid;
     background-color: orange;
     width: 100%;
@@ -187,6 +228,7 @@ btn:hover:active {
 .transition-added {
     transition-timing-function: linear;
 }
+
 .plain-panel.transition-right {
     transition-property: right;
 }
@@ -199,6 +241,7 @@ btn:hover:active {
 .plain-panel.transition-top {
     transition-property: top;
 }
+
 .plain-panel.transition-bottom {
     transition-property: bottom;
 }
@@ -209,7 +252,7 @@ btn:hover:active {
     /* display: block; */
     font-size: 1rem;
     /* place-self: center center; */
-    font-variation-settings: "slnt" 0, "wdth" 50;
+    font-variation-settings: "slnt"0, "wdth"50;
     /* background-color: cadetblue; */
     transform-style: preserve-3d;
 
@@ -228,12 +271,13 @@ btn:hover:active {
 .three-panel {
     position: absolute;
     display: flex;
-    background-color: #ffffff;
-    /* justify-content: center; */
+    /* background-color: #ffffff; */
+    justify-content: center;
     /* align-items: center; */
     /* font-size: 800px; */
     /* left: 50px; */
     height: 100%;
+    /* transform: scaleX(100); */
     /* background: linear-gradient(
     to right,
     red 20%,               
@@ -251,10 +295,15 @@ btn:hover:active {
     transition-timing-function: linear;
 }
 
+/* .three-panel.fade-out {
+    background-color: aqua;
+} */
+
 .three-panel__text {
     position: relative;
     top: 10%;
-    /* height: 100%; */
     text-wrap: nowrap;
+    /* background-color: turquoise; */
+    height: 80%;
     /* justify-self: center; */
 }

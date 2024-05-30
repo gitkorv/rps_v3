@@ -16,30 +16,38 @@ let scissorBtnSpan = scissorBtn.querySelector("span");
 const rpsBtnSpansAll = rpsBtnsAll.map(btn => btn.querySelector("span"));
 
 let scissorBtnWidth = scissorBtn.offsetWidth;
+let scissorBtnHeight = scissorBtn.offsetHeight;
+console.log(scissorBtnWidth, scissorBtnHeight);
 let scissorBtnSpanWidth = scissorBtnSpan.getBoundingClientRect().width;
 let originalRPSButtonSizeWidth = scissorBtnSpanWidth;
 
-function increaseFontSizeUntilWidth(spanClass, targetWidth, increment) {
+function increaseFontSizeUntilWidth(spanClass, targetWidth) {
     let span = document.querySelector(spanClass)
-    let currentWidth = span.offsetWidth;
+    let currentSpanWidth = span.offsetWidth;
     let fontSize = parseInt(window.getComputedStyle(span).fontSize)
 
-    if (currentWidth >= targetWidth) {
+    if (currentSpanWidth >= targetWidth) {
+        console.log("span in too wide");
         rpsBtnSpansAll.forEach(span => {
             span.style.fontSize = "2px";
         })
     }
+    currentSpanWidth = span.offsetWidth;
 
-    while (currentWidth * 1.11 < targetWidth) {
-        fontSize += increment;
+    while (currentSpanWidth < targetWidth * 0.8) {
+        fontSize++;
         rpsBtnSpansAll.forEach(span => {
             span.style.fontSize = fontSize + "px";
         })
-        currentWidth = span.offsetWidth;
+        currentSpanWidth = span.offsetWidth;
     }
+    fontSize--;
+    rpsBtnSpansAll.forEach(span => {
+        span.style.fontSize = fontSize + "px";
+    })
 }
-
-increaseFontSizeUntilWidth(".scissor-span", scissorBtnWidth, 2)
+console.log(scissorBtnSpanWidth, scissorBtnWidth);
+increaseFontSizeUntilWidth(".scissor-span", scissorBtnWidth)
 
 function resizeThings() {
     windowWidth = window.innerWidth;
@@ -75,7 +83,6 @@ function slideInButtons() {
     }
 }
 
-slideInButtons()
 
 function createCubeText({
     wordString = "text",
@@ -302,7 +309,6 @@ function createCubeText({
 
     if (runNext === false) {
         console.log("do nothing");
-
     } else {
         destinationContainerGrid.addEventListener('transitionend', function (e) {
             console.log(e.propertyName);
@@ -312,11 +318,7 @@ function createCubeText({
             console.log(destinationContainerGrid.style[e.propertyName]);
         })
     }
-
 }
-
-
-
 
 const testCubeText = {
     wordString: "do you",
@@ -353,6 +355,7 @@ const hiCubeText = {
 
 // createCubeText(hiCubeText)
 
+let create3PanelTextID = 0;
 
 function create3PanelText({
     string = "string",
@@ -361,32 +364,35 @@ function create3PanelText({
     transitionDelay = "0ms",
     runNext = false
 } = {}) {
-
+    create3PanelTextID++;
+    let myUniqueID = "id-" + create3PanelTextID ;
     let allThreePanels = [leftPanel, backPanel, rightPanel];
     let withOfEachPanelArray = [leftPanel.offsetWidth, backPanel.offsetWidth, rightPanel.offsetWidth]
     let total3PanelWidth = backPanel.offsetWidth + leftPanel.offsetWidth + rightPanel.offsetWidth;
     let panelHeight = backPanel.offsetHeight;
+
+    console.log(transitionDuration);
 
     for (let i = 0; i < allThreePanels.length; i++) {
         let basicBGPanel = document.createElement("div");
         basicBGPanel.classList.add("basic-bg-panel");
         allThreePanels[i].appendChild(basicBGPanel);
         let threePanelWideElement = document.createElement("div");
-        threePanelWideElement.classList.add("three-panel", `three-panel--${string}`);
+        threePanelWideElement.classList.add("three-panel", `three-panel--${myUniqueID}`, `three-panel--${string}-${myUniqueID}`);
         threePanelWideElement.style.width = `${total3PanelWidth}px`;
 
         basicBGPanel.appendChild(threePanelWideElement);
 
         let threePanelText = document.createElement("div");
-        threePanelText.classList.add("three-panel__text", `three-panel__text-${string}`)
+        threePanelText.classList.add("three-panel__text", `three-panel__text-${string}-${myUniqueID}`)
         threePanelWideElement.appendChild(threePanelText);
         threePanelText.textContent = string;
         threePanelText.style.fontSize = backPanel.offsetHeight + "px";
     }
 
-    let leftThreePanel = leftPanel.querySelector(`.three-panel--${string}`);
-    let backThreePanel = backPanel.querySelector(`.three-panel--${string}`);
-    let rightThreePanel = rightPanel.querySelector(`.three-panel--${string}`);
+    let leftThreePanel = leftPanel.querySelector(`.three-panel--${string}-${myUniqueID}`);
+    let backThreePanel = backPanel.querySelector(`.three-panel--${string}-${myUniqueID}`);
+    let rightThreePanel = rightPanel.querySelector(`.three-panel--${string}-${myUniqueID}`);
     let threePanelWideElementsArray = [leftThreePanel, backThreePanel, rightThreePanel];
     let leftPositionTicker = [0];
 
@@ -400,7 +406,6 @@ function create3PanelText({
     let threePanelTextArray = []
 
     threePanelWideElementsArray.forEach((panel) => {
-        console.log(panel.firstChild);
         threePanelTextArray.push(panel.firstChild)
     })
 
@@ -454,9 +459,7 @@ function create3PanelText({
             panel.style.top = panelHeight + "px";
             transitionProperty = "top"
         }
-
     })
-    console.log(threePanelWideElementsArray);
     requestAnimationFrame(() => {
         const reflow = topPanel.clientWidth;
         threePanelWideElementsArray.forEach(panel => {
@@ -479,12 +482,63 @@ function create3PanelText({
         })
     })
 
-    if (runNext === false) {
-        console.log("do nothing");
 
+
+
+    if (runNext === false) {
+        console.log("do nothing");        
     } else {
+
+        let transformMeOut;
+        let scaleXorY;
+        console.log(runNext);
+
+        console.log("do something");
         threePanelWideElementsArray[0].addEventListener('transitionend', function (e) {
-            create3PanelText(runNext);
+            console.log(e.propertyName);
+            if (e.propertyName !== "transform") {
+                runNext.forEach(runNext => {
+                    create3PanelText(runNext);
+                    console.log(runNext.transitionDuration);
+                    switch (runNext.slideInFrom) {
+                        case "left":
+                            transformMeOut = "right";
+                            scaleXorY = "scaleX(0)";
+                            break;
+                        case "right":
+                            transformMeOut = "left";
+                            scaleXorY = "scaleX(0)";
+                            break;
+                        case "top":
+                            transformMeOut = "center";
+                            scaleXorY = "scaleY(0)";
+                            break;
+                        case "bottom":
+                            transformMeOut = "center";
+                            scaleXorY = "scaleY(0)";
+                
+                            break;
+                    
+                        default:
+                            break;
+                    }
+                })
+                threePanelWideElementsArray.forEach(panel => {
+                    panel.style.transitionProperty = "transform";
+                    panel.style.transformOrigin = transformMeOut;
+                    console.log(runNext.length);
+                    if (runNext.length > 1) {
+                        let myTransitionDuration = parseInt(runNext[0].transitionDuration) * 0.75 ;
+                        console.log(myTransitionDuration);
+                        panel.style.transitionDuration = myTransitionDuration + "ms";
+
+                    } else {
+                        panel.style.transitionDuration = runNext[0].transitionDuration;
+
+                    }
+                    panel.style.transform = scaleXorY;
+                    })
+            }
         })
     }
 }
@@ -493,28 +547,45 @@ function create3PanelText({
 
 
 
+const scissor3PanelText2 = {
+    string: "SCISSOR",
+    slideInFrom: "bottom",
+    transitionDuration: "1000ms",
+    // transitionDelay : "300ms",
+    runNext: false
+}
 const scissor3PanelText = {
     string: "SCISSOR",
     slideInFrom: "top",
     transitionDuration: "1000ms",
-    transitionDelay : "300ms",
+    // transitionDelay : "300ms",
     runNext: false
 }
 const paper3PanelText = {
     string: "PAPER",
     slideInFrom: "right",
     transitionDuration: "1000ms",
-    runNext: scissor3PanelText
+    // transitionDelay: "300ms",
+    runNext: [scissor3PanelText, scissor3PanelText2]
 }
-
 const rock3PanelText = {
     string: "ROCK",
     slideInFrom: "left",
     transitionDuration: "1000ms",
-    runNext: paper3PanelText
+    runNext: [paper3PanelText]
 }
 
 window.onload = () => {
-    create3PanelText(rock3PanelText);
+    slideInButtons()
+
+    // create3PanelText(rock3PanelText);
     // create3PanelText(paper3PanelText)
 }
+
+window.addEventListener('load', (event) => {
+    setTimeout(() => {
+        create3PanelText(rock3PanelText);
+
+    }, 50);
+
+})
